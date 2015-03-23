@@ -174,6 +174,12 @@
   <data name="lineBreak" xml:space="preserve">
     <value>Line break</value>
   </data>
+  <data name="notRespondingArduino" xml:space="preserve">
+    <value>Arduino is not responding!</value>
+  </data>
+  <data name="notRespondingBluetooth" xml:space="preserve">
+    <value>Bluetooth is not responding!</value>
+  </data>
   <data name="pleaseWait" xml:space="preserve">
     <value>Please, wait...</value>
   </data>

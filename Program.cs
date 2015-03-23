@@ -54,6 +54,8 @@ namespace ArduinoToBluetooth
 		[STAThread]
 		static void Main()
 		{
+			byte[] ff = System.Text.Encoding.UTF8.GetBytes("\n\r " + Environment.NewLine);
+			Console.WriteLine(ff);
 			//localization debug and testing...
 			//Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
 			//Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");

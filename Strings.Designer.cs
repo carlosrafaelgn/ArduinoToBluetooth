@@ -232,6 +232,24 @@ namespace ArduinoToBluetooth {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Arduino is not responding!.
+        /// </summary>
+        internal static string notRespondingArduino {
+            get {
+                return ResourceManager.GetString("notRespondingArduino", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bluetooth is not responding!.
+        /// </summary>
+        internal static string notRespondingBluetooth {
+            get {
+                return ResourceManager.GetString("notRespondingBluetooth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please, wait....
         /// </summary>
         internal static string pleaseWait {

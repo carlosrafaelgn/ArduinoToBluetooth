@@ -82,6 +82,7 @@ namespace ArduinoToBluetooth
 		private Action threadReadyDelegate, threadDeathDelegate, threadData1SentDelegate, threadData2SentDelegate;
 		private Action<string> threadErrDelegate;
 		private AutoResetEvent threadWakeUpEvent;
+		private bool notResponding1, notResponding2;
 		private string com1, com2;
 		private int baud1, baud2, count1, count2;
 		private byte[] sendBuffer1, sendBuffer2;
@@ -144,6 +145,22 @@ namespace ArduinoToBluetooth
 			get
 			{
 				return count2;
+			}
+		}
+
+		public bool NotResponding1
+		{
+			get
+			{
+				return notResponding1;
+			}
+		}
+
+		public bool NotResponding2
+		{
+			get
+			{
+				return notResponding2;
 			}
 		}
 
@@ -213,6 +230,7 @@ namespace ArduinoToBluetooth
 			SerialPort port1 = null, port2 = null;
 			byte[] buffer1 = new byte[1024], buffer2 = new byte[1024];
 			string serialErr = null;
+			bool firstPort1Error = true, firstPort2Error = true;
 			try
 			{
 				try
@@ -261,33 +279,6 @@ namespace ArduinoToBluetooth
 
 				try
 				{
-					port1.DataReceived += (sender, e) =>
-					{
-						//this is executed in another worker thread
-						try
-						{
-							int s = port1.Read(buffer1, 0, buffer1.Length);
-							if (s > 0)
-							{
-								count1 += s; //won't do any harm... ;)
-								port2.Write(buffer1, 0, s);
-							}
-						}
-						catch (Exception ex)
-						{
-							//the system is being shut down
-							if (!running || !port1.IsOpen || !port2.IsOpen)
-								return;
-							serialErr = Program.str("errorSendingBluetooth") + ex.Message;
-							threadWakeUpEvent.Set();
-						}
-					};
-					port1.ErrorReceived += (sender, e) =>
-					{
-						//this is executed in another worker thread
-						serialErr = Program.str("errorArduino") + e.EventType;
-						threadWakeUpEvent.Set();
-					};
 					port1.Open();
 				}
 				catch (Exception ex)
@@ -295,115 +286,211 @@ namespace ArduinoToBluetooth
 					Err(Program.str("errorOpeningArduino") + ex.Message);
 					return;
 				}
+
 				try
 				{
-					if (!running)
-						return;
+					port2.Open();
+				}
+				catch (Exception ex)
+				{
+					Err(Program.str("errorOpeningBluetooth") + ex.Message);
+					return;
+				}
 
+				try
+				{
+					port1.DiscardInBuffer();
+				}
+				catch
+				{
+				}
+				try
+				{
+					port1.DiscardOutBuffer();
+				}
+				catch
+				{
+				}
+
+				try
+				{
+					port2.DiscardInBuffer();
+				}
+				catch
+				{
+				}
+				try
+				{
+					port2.DiscardOutBuffer();
+				}
+				catch
+				{
+				}
+
+				port1.DataReceived += (sender, e) =>
+				{
+					//this is executed in another worker thread
 					try
 					{
-						port2.DataReceived += (sender, e) =>
+						int s = port1.Read(buffer1, 0, buffer1.Length);
+						if (s > 0)
 						{
-							//this is executed in another worker thread
-							try
-							{
-								int s = port2.Read(buffer2, 0, buffer2.Length);
-								if (s > 0)
-								{
-									count2 += s; //won't do any harm... ;)
-									port1.Write(buffer2, 0, s);
-								}
-							}
-							catch (Exception ex)
-							{
-								//the system is being shut down
-								if (!running || !port1.IsOpen || !port2.IsOpen)
-									return;
-								serialErr = Program.str("errorSendingArduino") + ex.Message;
-								threadWakeUpEvent.Set();
-							}
-						};
-						port2.ErrorReceived += (sender, e) =>
-						{
-							//this is executed in another worker thread
-							serialErr = Program.str("errorBluetooth") + e.EventType;
-							threadWakeUpEvent.Set();
-						};
-						port2.Open();
+							count1 += s; //won't do any harm... ;)
+							port2.Write(buffer1, 0, s);
+							notResponding2 = false;
+						}
+					}
+					catch (TimeoutException)
+					{
+						notResponding2 = true;
 					}
 					catch (Exception ex)
 					{
-						Err(Program.str("errorOpeningBluetooth") + ex.Message);
+						//the system is being shut down
+						if (!running || !port1.IsOpen || !port2.IsOpen)
+							return;
+						serialErr = Program.str("errorSendingBluetooth") + ex.Message;
+						threadWakeUpEvent.Set();
+					}
+				};
+				port1.ErrorReceived += (sender, e) =>
+				{
+					//a few drivers indicate overrun when the port had been receiving
+					//too many bytes before it was open (which could easily happen if
+					//either the Arduino or the Bluetooth were sending data before this
+					//application was started)
+					if (firstPort1Error && e.EventType == SerialError.Overrun)
+					{
+						firstPort1Error = false;
 						return;
 					}
+					firstPort1Error = false;
+					//this is executed in another worker thread
+					serialErr = Program.str("errorArduino") + e.EventType;
+					threadWakeUpEvent.Set();
+				};
 
-					if (running)
-						BeginInvoke(threadReadyDelegate);
-
-					while (running)
-					{
-						if (sendBuffer1 != null)
-						{
-							try
-							{
-								port1.Write(sendBuffer1, 0, sendBuffer1.Length);
-								BeginInvoke(threadData1SentDelegate);
-							}
-							catch (Exception ex)
-							{
-								//the system is being shut down
-								if (running)
-									serialErr = Program.str("errorSendingArduino") + ex.Message;
-								break;
-							}
-							finally
-							{
-								sendBuffer1 = null;
-							}
-						}
-						if (sendBuffer2 != null)
-						{
-							try
-							{
-								port2.Write(sendBuffer2, 0, sendBuffer2.Length);
-								BeginInvoke(threadData2SentDelegate);
-							}
-							catch (Exception ex)
-							{
-								//the system is being shut down
-								if (running)
-									serialErr = Program.str("errorSendingBluetooth") + ex.Message;
-								break;
-							}
-							finally
-							{
-								sendBuffer2 = null;
-							}
-						}
-						threadWakeUpEvent.WaitOne();
-					}
-
-					try
-					{
-						port2.Close();
-					}
-					catch
-					{
-					}
-				}
-				finally
+				port2.DataReceived += (sender, e) =>
 				{
+					//this is executed in another worker thread
 					try
 					{
-						port1.Close();
+						int s = port2.Read(buffer2, 0, buffer2.Length);
+						if (s > 0)
+						{
+							count2 += s; //won't do any harm... ;)
+							port1.Write(buffer2, 0, s);
+							notResponding1 = false;
+						}
 					}
-					catch
+					catch (TimeoutException)
 					{
+						notResponding1 = true;
 					}
+					catch (Exception ex)
+					{
+						//the system is being shut down
+						if (!running || !port1.IsOpen || !port2.IsOpen)
+							return;
+						serialErr = Program.str("errorSendingArduino") + ex.Message;
+						threadWakeUpEvent.Set();
+					}
+				};
+				port2.ErrorReceived += (sender, e) =>
+				{
+					//a few drivers indicate overrun when the port had been receiving
+					//too many bytes before it was open (which could easily happen if
+					//either the Arduino or the Bluetooth were sending data before this
+					//application was started)
+					if (firstPort2Error && e.EventType == SerialError.Overrun)
+					{
+						firstPort2Error = false;
+						return;
+					}
+					firstPort2Error = false;
+					//this is executed in another worker thread
+					serialErr = Program.str("errorBluetooth") + e.EventType;
+					threadWakeUpEvent.Set();
+				};
+
+				if (!running)
+					return;
+
+				BeginInvoke(threadReadyDelegate);
+
+				while (running && serialErr == null)
+				{
+					if (sendBuffer1 != null)
+					{
+						try
+						{
+							port1.Write(sendBuffer1, 0, sendBuffer1.Length);
+							notResponding1 = false;
+							BeginInvoke(threadData1SentDelegate);
+						}
+						catch (TimeoutException)
+						{
+							notResponding1 = true;
+						}
+						catch (Exception ex)
+						{
+							//the system is being shut down
+							if (running && port1.IsOpen && port2.IsOpen)
+								serialErr = Program.str("errorSendingArduino") + ex.Message;
+							break;
+						}
+						finally
+						{
+							sendBuffer1 = null;
+						}
+					}
+					if (sendBuffer2 != null)
+					{
+						try
+						{
+							port2.Write(sendBuffer2, 0, sendBuffer2.Length);
+							notResponding2 = false;
+							BeginInvoke(threadData2SentDelegate);
+						}
+						catch (TimeoutException)
+						{
+							notResponding2 = true;
+						}
+						catch (Exception ex)
+						{
+							//the system is being shut down
+							if (running && port1.IsOpen && port2.IsOpen)
+								serialErr = Program.str("errorSendingBluetooth") + ex.Message;
+							break;
+						}
+						finally
+						{
+							sendBuffer2 = null;
+						}
+					}
+					if (serialErr == null)
+						threadWakeUpEvent.WaitOne();
 				}
+				running = false;
 			}
 			finally
 			{
+				try
+				{
+					if (port1 != null)
+						port1.Close();
+				}
+				catch
+				{
+				}
+				try
+				{
+					if (port2 != null)
+						port2.Close();
+				}
+				catch
+				{
+				}
 				try
 				{
 					if (port1 != null)
@@ -455,6 +542,8 @@ namespace ArduinoToBluetooth
 			notifyIcon.Icon = global::ArduinoToBluetooth.Properties.Resources.loading16;
 			preparing = true;
 			running = true;
+			notResponding1 = false;
+			notResponding2 = false;
 			count1 = 0;
 			count2 = 0;
 			sendBuffer1 = null;

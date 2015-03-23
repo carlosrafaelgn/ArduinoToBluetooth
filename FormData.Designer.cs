@@ -33,33 +33,33 @@
 			this.table = new System.Windows.Forms.TableLayoutPanel();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.panel1 = new System.Windows.Forms.Panel();
+			this.chkClear1 = new System.Windows.Forms.CheckBox();
+			this.panelLineBreak1 = new System.Windows.Forms.Panel();
+			this.cbLineBreak1 = new System.Windows.Forms.ComboBox();
+			this.lblLineBreak1 = new System.Windows.Forms.Label();
 			this.panelSend1 = new System.Windows.Forms.Panel();
 			this.txtSend1 = new System.Windows.Forms.TextBox();
 			this.btnSend1 = new System.Windows.Forms.Button();
 			this.lblStats1 = new System.Windows.Forms.Label();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
 			this.panel2 = new System.Windows.Forms.Panel();
+			this.chkClear2 = new System.Windows.Forms.CheckBox();
+			this.panelLineBreak2 = new System.Windows.Forms.Panel();
+			this.cbLineBreak2 = new System.Windows.Forms.ComboBox();
+			this.lblLineBreak2 = new System.Windows.Forms.Label();
 			this.panelSend2 = new System.Windows.Forms.Panel();
 			this.txtSend2 = new System.Windows.Forms.TextBox();
 			this.btnSend2 = new System.Windows.Forms.Button();
 			this.lblStats2 = new System.Windows.Forms.Label();
-			this.chkClear1 = new System.Windows.Forms.CheckBox();
-			this.chkClear2 = new System.Windows.Forms.CheckBox();
-			this.panelLineBreak1 = new System.Windows.Forms.Panel();
-			this.lblLineBreak1 = new System.Windows.Forms.Label();
-			this.cbLineBreak1 = new System.Windows.Forms.ComboBox();
-			this.panelLineBreak2 = new System.Windows.Forms.Panel();
-			this.cbLineBreak2 = new System.Windows.Forms.ComboBox();
-			this.lblLineBreak2 = new System.Windows.Forms.Label();
 			this.table.SuspendLayout();
 			this.groupBox1.SuspendLayout();
 			this.panel1.SuspendLayout();
+			this.panelLineBreak1.SuspendLayout();
 			this.panelSend1.SuspendLayout();
 			this.groupBox2.SuspendLayout();
 			this.panel2.SuspendLayout();
-			this.panelSend2.SuspendLayout();
-			this.panelLineBreak1.SuspendLayout();
 			this.panelLineBreak2.SuspendLayout();
+			this.panelSend2.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// timer
@@ -104,6 +104,53 @@
 			this.panel1.Name = "panel1";
 			this.panel1.Size = new System.Drawing.Size(215, 86);
 			this.panel1.TabIndex = 1;
+			// 
+			// chkClear1
+			// 
+			this.chkClear1.AutoSize = true;
+			this.chkClear1.Dock = System.Windows.Forms.DockStyle.Top;
+			this.chkClear1.Location = new System.Drawing.Point(0, 58);
+			this.chkClear1.Name = "chkClear1";
+			this.chkClear1.Size = new System.Drawing.Size(215, 21);
+			this.chkClear1.TabIndex = 2;
+			this.chkClear1.Text = "Apagar ao enviar";
+			this.chkClear1.UseVisualStyleBackColor = true;
+			// 
+			// panelLineBreak1
+			// 
+			this.panelLineBreak1.Controls.Add(this.cbLineBreak1);
+			this.panelLineBreak1.Controls.Add(this.lblLineBreak1);
+			this.panelLineBreak1.Dock = System.Windows.Forms.DockStyle.Top;
+			this.panelLineBreak1.Location = new System.Drawing.Point(0, 25);
+			this.panelLineBreak1.Name = "panelLineBreak1";
+			this.panelLineBreak1.Padding = new System.Windows.Forms.Padding(0, 4, 0, 4);
+			this.panelLineBreak1.Size = new System.Drawing.Size(215, 33);
+			this.panelLineBreak1.TabIndex = 1;
+			// 
+			// cbLineBreak1
+			// 
+			this.cbLineBreak1.Dock = System.Windows.Forms.DockStyle.Left;
+			this.cbLineBreak1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbLineBreak1.FormattingEnabled = true;
+			this.cbLineBreak1.Items.AddRange(new object[] {
+            "-",
+            "LF - \\n (0x0A)",
+            "CR - \\r (0x0D)",
+            "CRLF - \\r\\n"});
+			this.cbLineBreak1.Location = new System.Drawing.Point(108, 4);
+			this.cbLineBreak1.Name = "cbLineBreak1";
+			this.cbLineBreak1.Size = new System.Drawing.Size(106, 25);
+			this.cbLineBreak1.TabIndex = 1;
+			// 
+			// lblLineBreak1
+			// 
+			this.lblLineBreak1.Dock = System.Windows.Forms.DockStyle.Left;
+			this.lblLineBreak1.Location = new System.Drawing.Point(0, 4);
+			this.lblLineBreak1.Name = "lblLineBreak1";
+			this.lblLineBreak1.Size = new System.Drawing.Size(108, 25);
+			this.lblLineBreak1.TabIndex = 0;
+			this.lblLineBreak1.Text = "Quebra de linha";
+			this.lblLineBreak1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
 			// panelSend1
 			// 
@@ -167,6 +214,53 @@
 			this.panel2.Size = new System.Drawing.Size(215, 86);
 			this.panel2.TabIndex = 2;
 			// 
+			// chkClear2
+			// 
+			this.chkClear2.AutoSize = true;
+			this.chkClear2.Dock = System.Windows.Forms.DockStyle.Top;
+			this.chkClear2.Location = new System.Drawing.Point(0, 58);
+			this.chkClear2.Name = "chkClear2";
+			this.chkClear2.Size = new System.Drawing.Size(215, 21);
+			this.chkClear2.TabIndex = 2;
+			this.chkClear2.Text = "Apagar ao enviar";
+			this.chkClear2.UseVisualStyleBackColor = true;
+			// 
+			// panelLineBreak2
+			// 
+			this.panelLineBreak2.Controls.Add(this.cbLineBreak2);
+			this.panelLineBreak2.Controls.Add(this.lblLineBreak2);
+			this.panelLineBreak2.Dock = System.Windows.Forms.DockStyle.Top;
+			this.panelLineBreak2.Location = new System.Drawing.Point(0, 25);
+			this.panelLineBreak2.Name = "panelLineBreak2";
+			this.panelLineBreak2.Padding = new System.Windows.Forms.Padding(0, 4, 0, 4);
+			this.panelLineBreak2.Size = new System.Drawing.Size(215, 33);
+			this.panelLineBreak2.TabIndex = 1;
+			// 
+			// cbLineBreak2
+			// 
+			this.cbLineBreak2.Dock = System.Windows.Forms.DockStyle.Left;
+			this.cbLineBreak2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbLineBreak2.FormattingEnabled = true;
+			this.cbLineBreak2.Items.AddRange(new object[] {
+            "-",
+            "LF - \\n (0x0A)",
+            "CR - \\r (0x0D)",
+            "CRLF - \\r\\n"});
+			this.cbLineBreak2.Location = new System.Drawing.Point(108, 4);
+			this.cbLineBreak2.Name = "cbLineBreak2";
+			this.cbLineBreak2.Size = new System.Drawing.Size(106, 25);
+			this.cbLineBreak2.TabIndex = 1;
+			// 
+			// lblLineBreak2
+			// 
+			this.lblLineBreak2.Dock = System.Windows.Forms.DockStyle.Left;
+			this.lblLineBreak2.Location = new System.Drawing.Point(0, 4);
+			this.lblLineBreak2.Name = "lblLineBreak2";
+			this.lblLineBreak2.Size = new System.Drawing.Size(108, 25);
+			this.lblLineBreak2.TabIndex = 0;
+			this.lblLineBreak2.Text = "Quebra de linha";
+			this.lblLineBreak2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			// 
 			// panelSend2
 			// 
 			this.panelSend2.Controls.Add(this.txtSend2);
@@ -206,100 +300,7 @@
 			this.lblStats2.Size = new System.Drawing.Size(215, 45);
 			this.lblStats2.TabIndex = 1;
 			this.lblStats2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			// 
-			// chkClear1
-			// 
-			this.chkClear1.AutoSize = true;
-			this.chkClear1.Dock = System.Windows.Forms.DockStyle.Top;
-			this.chkClear1.Location = new System.Drawing.Point(0, 58);
-			this.chkClear1.Name = "chkClear1";
-			this.chkClear1.Size = new System.Drawing.Size(215, 21);
-			this.chkClear1.TabIndex = 2;
-			this.chkClear1.Text = "Apagar ao enviar";
-			this.chkClear1.UseVisualStyleBackColor = true;
-			// 
-			// chkClear2
-			// 
-			this.chkClear2.AutoSize = true;
-			this.chkClear2.Dock = System.Windows.Forms.DockStyle.Top;
-			this.chkClear2.Location = new System.Drawing.Point(0, 58);
-			this.chkClear2.Name = "chkClear2";
-			this.chkClear2.Size = new System.Drawing.Size(215, 21);
-			this.chkClear2.TabIndex = 2;
-			this.chkClear2.Text = "Apagar ao enviar";
-			this.chkClear2.UseVisualStyleBackColor = true;
-			// 
-			// panelLineBreak1
-			// 
-			this.panelLineBreak1.Controls.Add(this.cbLineBreak1);
-			this.panelLineBreak1.Controls.Add(this.lblLineBreak1);
-			this.panelLineBreak1.Dock = System.Windows.Forms.DockStyle.Top;
-			this.panelLineBreak1.Location = new System.Drawing.Point(0, 25);
-			this.panelLineBreak1.Name = "panelLineBreak1";
-			this.panelLineBreak1.Padding = new System.Windows.Forms.Padding(0, 4, 0, 4);
-			this.panelLineBreak1.Size = new System.Drawing.Size(215, 33);
-			this.panelLineBreak1.TabIndex = 1;
-			// 
-			// lblLineBreak1
-			// 
-			this.lblLineBreak1.Dock = System.Windows.Forms.DockStyle.Left;
-			this.lblLineBreak1.Location = new System.Drawing.Point(0, 4);
-			this.lblLineBreak1.Name = "lblLineBreak1";
-			this.lblLineBreak1.Size = new System.Drawing.Size(108, 25);
-			this.lblLineBreak1.TabIndex = 0;
-			this.lblLineBreak1.Text = "Quebra de linha";
-			this.lblLineBreak1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			// 
-			// cbLineBreak1
-			// 
-			this.cbLineBreak1.Dock = System.Windows.Forms.DockStyle.Left;
-			this.cbLineBreak1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cbLineBreak1.FormattingEnabled = true;
-			this.cbLineBreak1.Items.AddRange(new object[] {
-            "-",
-            "LF - \\n",
-            "CR - \\r",
-            "CRLF - \\r\\n"});
-			this.cbLineBreak1.Location = new System.Drawing.Point(108, 4);
-			this.cbLineBreak1.Name = "cbLineBreak1";
-			this.cbLineBreak1.Size = new System.Drawing.Size(106, 25);
-			this.cbLineBreak1.TabIndex = 1;
-			// 
-			// panelLineBreak2
-			// 
-			this.panelLineBreak2.Controls.Add(this.cbLineBreak2);
-			this.panelLineBreak2.Controls.Add(this.lblLineBreak2);
-			this.panelLineBreak2.Dock = System.Windows.Forms.DockStyle.Top;
-			this.panelLineBreak2.Location = new System.Drawing.Point(0, 25);
-			this.panelLineBreak2.Name = "panelLineBreak2";
-			this.panelLineBreak2.Padding = new System.Windows.Forms.Padding(0, 4, 0, 4);
-			this.panelLineBreak2.Size = new System.Drawing.Size(215, 33);
-			this.panelLineBreak2.TabIndex = 1;
-			// 
-			// cbLineBreak2
-			// 
-			this.cbLineBreak2.Dock = System.Windows.Forms.DockStyle.Left;
-			this.cbLineBreak2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cbLineBreak2.FormattingEnabled = true;
-			this.cbLineBreak2.Items.AddRange(new object[] {
-            "-",
-            "LF - \\n",
-            "CR - \\r",
-            "CRLF - \\r\\n"});
-			this.cbLineBreak2.Location = new System.Drawing.Point(108, 4);
-			this.cbLineBreak2.Name = "cbLineBreak2";
-			this.cbLineBreak2.Size = new System.Drawing.Size(106, 25);
-			this.cbLineBreak2.TabIndex = 1;
-			// 
-			// lblLineBreak2
-			// 
-			this.lblLineBreak2.Dock = System.Windows.Forms.DockStyle.Left;
-			this.lblLineBreak2.Location = new System.Drawing.Point(0, 4);
-			this.lblLineBreak2.Name = "lblLineBreak2";
-			this.lblLineBreak2.Size = new System.Drawing.Size(108, 25);
-			this.lblLineBreak2.TabIndex = 0;
-			this.lblLineBreak2.Text = "Quebra de linha";
-			this.lblLineBreak2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.lblStats2.Click += new System.EventHandler(this.lblStats2_Click);
 			// 
 			// FormData
 			// 
@@ -319,15 +320,15 @@
 			this.groupBox1.ResumeLayout(false);
 			this.panel1.ResumeLayout(false);
 			this.panel1.PerformLayout();
+			this.panelLineBreak1.ResumeLayout(false);
 			this.panelSend1.ResumeLayout(false);
 			this.panelSend1.PerformLayout();
 			this.groupBox2.ResumeLayout(false);
 			this.panel2.ResumeLayout(false);
 			this.panel2.PerformLayout();
+			this.panelLineBreak2.ResumeLayout(false);
 			this.panelSend2.ResumeLayout(false);
 			this.panelSend2.PerformLayout();
-			this.panelLineBreak1.ResumeLayout(false);
-			this.panelLineBreak2.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}

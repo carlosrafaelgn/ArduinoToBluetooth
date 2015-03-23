@@ -44,7 +44,7 @@ namespace ArduinoToBluetooth
 	{
 		public event Action<byte[]> Data1SendRequested, Data2SendRequested;
 
-		private bool data1Pending, data2Pending;
+		private bool data1Pending, data2Pending, notResponding1, notResponding2;
 		private StringBuilder timerSB;
 		private FormMain parent;
 
@@ -109,10 +109,24 @@ namespace ArduinoToBluetooth
 			timerSB.Remove(0, timerSB.Length);
 			timerSB.Append(Program.str("receivedBytes"));
 			timerSB.Append(parent.Count1);
+			if (notResponding1 != parent.NotResponding1)
+				lblStats1.ForeColor = ((notResponding1 = parent.NotResponding1) ? Color.Red : chkClear1.ForeColor);
+			if (notResponding1)
+			{
+				timerSB.Append(Environment.NewLine);
+				timerSB.Append(Program.str("notRespondingArduino"));
+			}
 			lblStats1.Text = timerSB.ToString();
 			timerSB.Remove(0, timerSB.Length);
 			timerSB.Append(Program.str("receivedBytes"));
 			timerSB.Append(parent.Count2);
+			if (notResponding2 != parent.NotResponding2)
+				lblStats2.ForeColor = ((notResponding2 = parent.NotResponding2) ? Color.Red : chkClear2.ForeColor);
+			if (notResponding2)
+			{
+				timerSB.Append(Environment.NewLine);
+				timerSB.Append(Program.str("notRespondingBluetooth"));
+			}
 			lblStats2.Text = timerSB.ToString();
 		}
 
@@ -184,6 +198,11 @@ namespace ArduinoToBluetooth
 		{
 			if (e.KeyCode == Keys.Enter)
 				btnSend2.PerformClick();
+		}
+
+		private void lblStats2_Click(object sender, EventArgs e)
+		{
+
 		}
 	}
 }
